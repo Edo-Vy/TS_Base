@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {   
+      "target": "es6", // muốn buil ra js phiên bản nào 
+      "module": "commonjs", // buil những chỗ import thành required ( để dễ hiểu )
+      "outDir": ".js", // format file.ts ->  file.js
+  }
+}
+// Trong ts có 1 số tính năng mà js không có 
