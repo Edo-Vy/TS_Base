@@ -70,16 +70,20 @@ let userLogin:null = null;
 
 
  // interface định dạng dữ liệu protoype (class)
-
+//--- Bản chất interface chỉ định nghĩa ra format thôi chứ ko xử lý
+//---- Xử lý chỉ có class hoặc ob chứ format ko xử lý
+//===== Gọi là tính đa hình trong hướng đối tượng
  interface CRUD {
-     create,
+     create : (newItem)=>void,
      update,
      delete,
      search
  }
 // tạo ra 1 lớp đối tượng
  class FoodList implements CRUD {
-     create: any;
+     create: (newItem : any) =>{
+
+     };
      update: any;
      search: any;
      delete: any;
@@ -119,11 +123,116 @@ const renderH1 = (title:string):void =>{
 }
 const renderDIV = (title:string):void =>{
 
-    document.querySelector('body').innerHTML = `<div class="bg-dark text-light text-center">${title}</div>`
+    document.querySelector('body').innerHTML = `<div class="bg-dark text-light text-center py-4">${title}</div>`
 }
 // main(renderH1);
 main(renderDIV);
 
 // Kiểu dữ liệu của mảng
-
+//--- tất cả phần tử trong [ phải chung kiểu dữ liệu ]
 let arrNumber : number[] = [1,2,3,4,5];
+let arrprod :Product[] = [
+    {id:1, name:'pro1', price:1000, img:'link1'},
+    {id:2, name:'pro2', price:1000, img:'link2'},
+    {id:3, name:'pro3', price:1000, img:'link3'},
+];
+
+//tuple : thể hiện của dữ liệu dưới dạng mảng
+//--- phần tử thứ nhất khác vs phần tử thứ 2 ở kiểu dữ liệu [number,(newNumber:number)=>number] == number, function
+
+let result:[number,(newNumber:number)=>number] = [1, (newNumber):number=>{
+
+    return newNumber;
+
+}];
+
+let sv:[number, string] = [1,'ABC'];
+
+// kiểu dữ liệu any, unknown
+//--- sẽ nhận tất cả giá trị
+type ResponseServer = Product | number;
+let result20:any| number = 1;
+
+//--- any cho phép thực thi operation ( +, -, *, /, gọi hàm...)
+
+//- Lớp đối tượng thì có thể gán giá trị được cho nó
+
+class ProductType {
+
+    id: string ='';
+    name: string ='';
+    img: string ='';
+    showInfo ():void {
+        console.log('id',this.id);
+        console.log('name',this.name);
+        console.log('img',this.img);
+    }
+}
+
+let prod1 = new ProductType();
+prod1.id = '1';
+prod1.name = 'produc 2';
+prod1.img = 'https://picsum.photos/200/200';
+
+// let result30:any = prod1;
+// let result30:any = undefined;
+//unknown ~ any nhưng chặn lại ở bước operation
+//--- check kiểu dữ liệu mới được thực hiện operation
+let result30:unknown = undefined;
+let result40:unknown = 1;
+
+if (result30 instanceof ProductType){
+     result30.showInfo();
+
+}
+
+// result30.showInfo();
+
+if (typeof result40 == 'number'){
+    result40 ++;
+}
+
+/** access modifier
+ * --- private : trong class sử dụng được, instance ( đối tượng từ class đó ) không truy xuất được.
+ * Lớp con không thể sử dụng được 
+ * --- protected : trong class đó sử dụng được, instance không sử dụng được, class con có thể sử dụng
+ * --- public ( mặc định ) : tất cả đều truy xuất được
+ * */ 
+
+class NhanVienCyber {
+
+    maNV :string|number = '';
+    tenNV : string = '';
+    // private luongCB : number = 1000;
+    protected luongCB : number = 1000;
+    heSL: number = 1;
+
+    tinhLuong() : number {
+        return this.luongCB * this.heSL;
+    };
+    tinhPhuCap() : number {
+        return this.luongCB * this.heSL + 1;
+    };
+}
+// private : chỉ dùng bình thường được trong lớp đối tượng, ra ngoài lớp đối tượng không dùng được
+let  nv1 : NhanVienCyber = new NhanVienCyber();
+
+nv1.maNV = 1;
+nv1.tenNV = ' ABC';
+
+console.log('luong', nv1.tinhLuong());
+
+// nv1.luongCB = 5000;
+
+class NhanVienKTCyber extends NhanVienCyber {
+
+    nghiepVuKT : string ='';
+}
+
+let  nv2 : NhanVienKTCyber = new NhanVienKTCyber();
+
+nv2.maNV = 2;
+nv2.tenNV = ' ABC';
+
+
+console.log('luong', nv1.tinhLuong());
