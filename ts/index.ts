@@ -36,7 +36,7 @@ let userLogin:null = null;
  * Tuy nhiên interface có nhiều tính năng hơn và  chỉ sử dụng trên TS
  * --- có kế thừa ( extends ) có thể phát triển thêm
  * --- merge interface cùng tên
- * --- interface định dạng dữ liệu protoype (class)
+ * --- interface định dạng dữ liệu prototype (class)
  * Dùng được cho class
  */
 
@@ -103,7 +103,7 @@ let tinhTong = (num1:number, num2:number) :number=>{
     return num1 + num2;
 }
 
-//---- hàm showMess ko trả về gì hết ( ko có leengj output hay return)
+//---- hàm showMess ko trả về gì hết ( ko có lệnh output hay return)
 //------ thì ko cần khai báo gì hết () hoặc (): void -> void ko cần return 
 let showMess = (mess:string):void =>{
 
@@ -236,3 +236,69 @@ nv2.tenNV = ' ABC';
 
 
 console.log('luong', nv1.tinhLuong());
+
+/** Generic 
+ * - Cho phép truyền động type vào phần format
+ */
+// <..>: đại diện cho 1 biến làs kiểu dữ liệu  ex <T>
+
+class List<T> {
+    data : T[] = [];
+    create = (newItem:T) =>{
+        this.data.push(newItem);
+    }
+    getItemById = (id:any)=>{
+        return this.data.find((item:any) => item.id === id);
+    }
+    deleteItem = (id:any) =>{
+        this.data = this.data.filter((item:any) => item.id  !== id);
+    }
+}
+
+type User = {
+    id:number
+    userName : string;
+    password: number | string;
+    fullName: string;
+    email: string;
+    phone : number | string;
+}
+
+let userList = new List<User>();
+let user :User = {id:1,userName:'a-1', password:123, fullName:'abc', email:'abs', phone:123};
+
+userList.create(user);
+userList.deleteItem(1);
+console.log('userList',userList);
+
+
+type Product__Cl = {
+    id: number;
+    name: string;
+    price : number;
+}
+
+let proList = new List<Product__Cl>();
+
+let newPro:Product__Cl = {id:1, name:'pro-1', price:1000};
+
+proList.create(newPro);
+
+console.log(proList);
+
+//  utility type ======
+
+let funcDemo = ():number =>{
+    return 1;
+}
+//--- ReturnType : trả về type - thường dùng cho Hook, dispatch
+type ResultNumber = ReturnType<typeof funcDemo>;
+
+let FuncDispatch = ():()=>number =>{
+
+    return function ():number {
+        return 1
+    }
+}
+
+type ResultFunc = ReturnType<typeof FuncDispatch>

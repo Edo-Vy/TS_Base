@@ -32,7 +32,7 @@ class FoodList {
 let tinhTong = (num1, num2) => {
     return num1 + num2;
 };
-//---- hàm showMess ko trả về gì hết ( ko có leengj output hay return)
+//---- hàm showMess ko trả về gì hết ( ko có lệnh output hay return)
 //------ thì ko cần khai báo gì hết () hoặc (): void -> void ko cần return 
 let showMess = (mess) => {
     console.log("Hello", mess);
@@ -46,9 +46,128 @@ const renderH1 = (title) => {
     document.querySelector('body').innerHTML = `<h1>${title}</h1>`;
 };
 const renderDIV = (title) => {
-    document.querySelector('body').innerHTML = `<div class="bg-dark text-light text-center">${title}</div>`;
+    document.querySelector('body').innerHTML = `<div class="bg-dark text-light text-center py-4">${title}</div>`;
 };
 // main(renderH1);
 main(renderDIV);
 // Kiểu dữ liệu của mảng
+//--- tất cả phần tử trong [ phải chung kiểu dữ liệu ]
 let arrNumber = [1, 2, 3, 4, 5];
+let arrprod = [
+    { id: 1, name: 'pro1', price: 1000, img: 'link1' },
+    { id: 2, name: 'pro2', price: 1000, img: 'link2' },
+    { id: 3, name: 'pro3', price: 1000, img: 'link3' },
+];
+//tuple : thể hiện của dữ liệu dưới dạng mảng
+//--- phần tử thứ nhất khác vs phần tử thứ 2 ở kiểu dữ liệu [number,(newNumber:number)=>number] == number, function
+let result = [1, (newNumber) => {
+        return newNumber;
+    }];
+let sv = [1, 'ABC'];
+let result20 = 1;
+//--- any cho phép thực thi operation ( +, -, *, /, gọi hàm...)
+//- Lớp đối tượng thì có thể gán giá trị được cho nó
+class ProductType {
+    constructor() {
+        this.id = '';
+        this.name = '';
+        this.img = '';
+    }
+    showInfo() {
+        console.log('id', this.id);
+        console.log('name', this.name);
+        console.log('img', this.img);
+    }
+}
+let prod1 = new ProductType();
+prod1.id = '1';
+prod1.name = 'produc 2';
+prod1.img = 'https://picsum.photos/200/200';
+// let result30:any = prod1;
+// let result30:any = undefined;
+//unknown ~ any nhưng chặn lại ở bước operation
+//--- check kiểu dữ liệu mới được thực hiện operation
+let result30 = undefined;
+let result40 = 1;
+if (result30 instanceof ProductType) {
+    result30.showInfo();
+}
+// result30.showInfo();
+if (typeof result40 == 'number') {
+    result40++;
+}
+/** access modifier
+ * --- private : trong class sử dụng được, instance ( đối tượng từ class đó ) không truy xuất được.
+ * Lớp con không thể sử dụng được
+ * --- protected : trong class đó sử dụng được, instance không sử dụng được, class con có thể sử dụng
+ * --- public ( mặc định ) : tất cả đều truy xuất được
+ * */
+class NhanVienCyber {
+    constructor() {
+        this.maNV = '';
+        this.tenNV = '';
+        // private luongCB : number = 1000;
+        this.luongCB = 1000;
+        this.heSL = 1;
+    }
+    tinhLuong() {
+        return this.luongCB * this.heSL;
+    }
+    ;
+    tinhPhuCap() {
+        return this.luongCB * this.heSL + 1;
+    }
+    ;
+}
+// private : chỉ dùng bình thường được trong lớp đối tượng, ra ngoài lớp đối tượng không dùng được
+let nv1 = new NhanVienCyber();
+nv1.maNV = 1;
+nv1.tenNV = ' ABC';
+console.log('luong', nv1.tinhLuong());
+// nv1.luongCB = 5000;
+class NhanVienKTCyber extends NhanVienCyber {
+    constructor() {
+        super(...arguments);
+        this.nghiepVuKT = '';
+    }
+}
+let nv2 = new NhanVienKTCyber();
+nv2.maNV = 2;
+nv2.tenNV = ' ABC';
+console.log('luong', nv1.tinhLuong());
+/** Generic
+ * - Cho phép truyền động type vào phần format
+ */
+// <..>: đại diện cho 1 biến làs kiểu dữ liệu  ex <T>
+class List {
+    constructor() {
+        this.data = [];
+        this.create = (newItem) => {
+            this.data.push(newItem);
+        };
+        this.getItemById = (id) => {
+            return this.data.find((item) => item.id === id);
+        };
+        this.deleteItem = (id) => {
+            this.data = this.data.filter((item) => item.id !== id);
+        };
+    }
+}
+let userList = new List();
+let user = { id: 1, userName: 'a-1', password: 123, fullName: 'abc', email: 'abs', phone: 123 };
+userList.create(user);
+userList.deleteItem(1);
+console.log('userList', userList);
+let proList = new List();
+let newPro = { id: 1, name: 'pro-1', price: 1000 };
+proList.create(newPro);
+console.log(proList);
+//  utility type ======
+let funcDemo = () => {
+    return 1;
+};
+let FuncDispatch = () => {
+    return function () {
+        return 1;
+    };
+};
